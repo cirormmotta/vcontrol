@@ -1,0 +1,10 @@
+@if(controlErrorStateMatcher.isErrorState(control, form)) {
+    @switch (true) {
+        @case (control.hasError('required')) {
+            <mat-error>{{controlTitle}} é <strong>obrigatório</strong></mat-error>
+        }
+        @case (control.hasError('email')) {
+            <mat-error>Email inválido</mat-error>
+        }
+    }
+}

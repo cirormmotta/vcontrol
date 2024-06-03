@@ -1,0 +1,18 @@
+@import '../../../styles/styles.scss';
+
+:host,
+.unauthenticated {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+}
+.unauthenticated-content {
+    width: 100%;
+    max-width: 360px;
+    padding: 16px;
+}
+:host {
+    background-color: $primary-color;
+}

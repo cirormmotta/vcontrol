@@ -1,0 +1,28 @@
+@import "../../../styles/styles.scss";
+:host {
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  * {
+    color: $primary-card-color;
+  }
+  mat-list-item {
+    padding: 0;
+    height: 32px;
+    h3 {
+      margin: 0;
+      border-bottom: 1px solid $primary-card-color;
+    }
+  }
+  .menu-item-content {
+    a {
+      display: flex;
+      gap: 8px;
+      font-size: 16px;
+      padding: 0 8px;
+    }
+    &:hover {
+      background-color: rgba($primary-font-color, 0.5);
+    }
+  }
+}

@@ -1,0 +1,10 @@
+<mat-list role="list" class="menu-items">
+  <ng-container *ngFor="let menuItem of menuList">
+    <mat-list-item *appPermission="menuItem.permissions" role="listitem" class="menu-item-content">
+      <a [routerLink]="menuItem.path">
+        <mat-icon aria-hidden="false" fontIcon="menuItem.icon"></mat-icon>
+        {{ menuItem.title }}
+      </a>
+    </mat-list-item>
+  </ng-container>
+</mat-list>

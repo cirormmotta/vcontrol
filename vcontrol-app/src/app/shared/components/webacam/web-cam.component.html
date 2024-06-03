@@ -1,0 +1,41 @@
+<div class="video-container">
+  <video
+    [hidden]="isCaptured"
+    #video
+    id="video"
+    [width]="WIDTH"
+    [height]="HEIGHT"
+    autoplay
+  ></video>
+  <canvas
+    [hidden]="!isCaptured || picture"
+    #canvas
+    id="canvas"
+    [width]="WIDTH"
+    [height]="HEIGHT"
+  ></canvas>
+  <img *ngIf="picture" [src]="picture" alt="">
+  <div class="error">
+    {{ error }}
+  </div>
+</div>
+<div class="snap-container">
+  <button
+    type="button"
+    *ngIf="!isCaptured"
+    (click)="pictureCapture()"
+    mat-flat-button
+    color="primary"
+  >
+    <mat-icon>photo_camera</mat-icon> <span>Caputurar foto</span>
+  </button>
+
+  <button
+    type="button"
+    mat-button
+    *ngIf="isCaptured"
+    (click)="newPictureCapture()"
+  >
+    <mat-icon>restart_alt</mat-icon> <span>Nova foto</span>
+  </button>
+</div>

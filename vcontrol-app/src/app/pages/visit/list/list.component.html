@@ -1,0 +1,101 @@
+<mat-card class="example-card">
+  <mat-card-header>
+    <mat-card-title>Visitas</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="filters">
+      <div>
+        <mat-form-field>
+          <mat-label>Filtrar por nome</mat-label>
+          <input
+            matInput
+            [(ngModel)]="filterName"
+            placeholder="Filtrar"
+            (keyup)="searched = false"
+            #input
+          />
+        </mat-form-field>
+        <button *ngIf="!searched" (click)="list()" mat-button>
+          <mat-icon>search</mat-icon>
+          <span>Buscar</span>
+        </button>
+        <button *ngIf="searched" (click)="clear()" mat-button>
+          <mat-icon>clear</mat-icon>
+          <span>Limpar</span>
+        </button>
+      </div>
+      <a [routerLink]="['novo']" mat-flat-button color="primary"
+        >Cadastrar visitante</a
+      >
+    </div>
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+      <ng-container matColumnDef="visitor">
+        <th mat-header-cell *matHeaderCellDef>Visitante</th>
+        <td mat-cell *matCellDef="let element">
+          <div class="visitor-name">
+            <img [src]="element?.visitor?.picture" [alt]="element?.visitor?.name" class="avatar" />
+            {{ element?.visitor?.name }}
+          </div>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="residence">
+        <th mat-header-cell *matHeaderCellDef>Morador</th>
+        <td mat-cell *matCellDef="let element">
+          <div class="visitor-name">
+            {{ element?.resident?.name }}<br>
+            <small>
+              {{ element?.residence?.name }}
+            </small>
+          </div>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="typeVisit">
+        <th mat-header-cell *matHeaderCellDef>Tipo da visita</th>
+        <td mat-cell *matCellDef="let element">
+          <div class="visitor-name">
+            {{ element?.typeVisit?.name }}
+          </div>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef>Ações</th>
+        <td mat-cell *matCellDef="let element">
+          <button
+            mat-icon-button
+            [matMenuTriggerFor]="menu"
+            aria-label="Example icon-button with a menu"
+          >
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button [routerLink]="['editar', element.id]" mat-menu-item>
+              <mat-icon>edit</mat-icon>
+              <span>Editar</span>
+            </button>
+            <button (click)="remove(element.id)" mat-menu-item>
+              <mat-icon>delete</mat-icon>
+              <span>Excluir</span>
+            </button>
+          </mat-menu>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="4">
+          Nenhum resultado para "{{ input.value }}"
+        </td>
+      </tr>
+    </table>
+    <mat-paginator
+      [length]="count"
+      [hidePageSize]="true"
+      [pageSize]="10"
+      (page)="handlePageEvent($event)"
+      aria-label="Selecionar página"
+    >
+    </mat-paginator>
+  </mat-card-content>
+</mat-card>

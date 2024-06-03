@@ -1,0 +1,33 @@
+<mat-drawer-container class="container" autosize>
+  <mat-drawer #drawer class="sidenav" mode="side">
+    <app-menu-content></app-menu-content>
+  </mat-drawer>
+
+  <div class="navigation-container">
+    <mat-toolbar class="toolbar">
+      <button
+        mat-icon-button
+        class="example-icon"
+        aria-label="Example icon-button with menu icon"
+        (click)="drawer.toggle()"
+      >
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span>Controle de visitantes</span>
+      <span class="example-spacer"></span>
+      <button
+        (click)="logOut()"
+        mat-icon-button
+        class="example-icon favorite-icon"
+        aria-label="Example icon-button with heart icon"
+      >
+        <mat-icon>logout</mat-icon>
+      </button>
+    </mat-toolbar>
+    <div class="app-content">
+      <div class="app-content__container">
+        <router-outlet />
+      </div>
+    </div>
+  </div>
+</mat-drawer-container>

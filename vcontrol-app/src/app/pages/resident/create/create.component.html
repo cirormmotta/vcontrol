@@ -1,0 +1,46 @@
+<form #ngForm="ngForm" [formGroup]="form" (ngSubmit)="submit()">
+  <h2 mat-dialog-title>Cadastrar</h2>
+  <mat-dialog-content class="form-content">
+    <mat-form-field>
+      <mat-label>Nome</mat-label>
+      <input
+        type="text"
+        matInput
+        [formControl]="form.controls.name"
+        placeholder="Nome"
+      />
+      <app-errors-handler
+        [control]="form.controls.name"
+        controlTitle="Nome"
+        [form]="ngForm"
+      ></app-errors-handler>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Celular</mat-label>
+      <input
+        type="text"
+        matInput
+        [formControl]="form.controls.phone"
+        mask="(00)0 0000-0000"
+        placeholder="Celular"
+      />
+      <app-errors-handler
+        [control]="form.controls.phone"
+        controlTitle="Celular"
+        [form]="ngForm"
+      ></app-errors-handler>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Residência</mat-label>
+      <mat-select [formControl]="form.controls.residence">
+        <ng-content *ngFor="let option of residenceList | async">
+          <mat-option [value]="option.id">{{ option.name }}</mat-option>
+        </ng-content>
+      </mat-select>
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button type="button" (click)="onNoClick()">Cancelar</button>
+    <button mat-flat-button type="submit">Salvar</button>
+  </mat-dialog-actions>
+</form>

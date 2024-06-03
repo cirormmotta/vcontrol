@@ -1,0 +1,62 @@
+<mat-card>
+  <form #ngForm="ngForm" [formGroup]="form" (ngSubmit)="submit()">
+    <mat-card-header>
+      <mat-card-title>Editar visitante</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="form-content">
+        <mat-form-field>
+          <mat-label>CPF</mat-label>
+          <input
+            type="text"
+            matInput
+            [formControl]="form.controls.cpf"
+            mask="000.000.000-00"
+            placeholder="CPF"
+          />
+          <app-errors-handler
+            [control]="form.controls.cpf"
+            controlTitle="CPF"
+            [form]="ngForm"
+          ></app-errors-handler>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Nome</mat-label>
+          <input
+            type="text"
+            matInput
+            [formControl]="form.controls.name"
+            placeholder="Nome"
+          />
+          <app-errors-handler
+            [control]="form.controls.name"
+            controlTitle="Nome"
+            [form]="ngForm"
+          ></app-errors-handler>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Celular</mat-label>
+          <input
+            type="text"
+            matInput
+            [formControl]="form.controls.phone"
+            mask="(00)0 0000-0000"
+            placeholder="Celular"
+          />
+          <app-errors-handler
+            [control]="form.controls.phone"
+            controlTitle="Celular"
+            [form]="ngForm"
+          ></app-errors-handler>
+        </mat-form-field>
+      </div>
+      <div class="picture-content">
+        <app-web-cam (capture)="picture = $event" [picture]="picture"></app-web-cam>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <button type="submit" mat-flat-button color="primary">Salvar</button>
+      <a [routerLink]="['/', 'visitantes']" mat-button> Cancelar </a>
+    </mat-card-actions>
+  </form>
+</mat-card>

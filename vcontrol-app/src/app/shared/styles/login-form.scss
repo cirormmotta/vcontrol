@@ -1,0 +1,15 @@
+.login-form {
+    mat-card-actions {
+        flex-direction: column;
+        gap: 8px;
+        button {
+            width: 100%;
+        }
+    }
+    mat-form-field {
+        width: 100%;
+    }
+    mat-card-content {
+        margin: 16px 0 0;
+    }
+}
