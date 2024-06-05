@@ -22,18 +22,20 @@ export class ToastrService {
   private handleMessages(
     messages: string | string[] | { [key: string]: string }
   ): string[] {
-    if (Array.isArray(messages)) {
-      return messages;
+    if (typeof messages !== 'object') {
+      return [messages];
     }
-    if (typeof messages === 'object') {
-      return Object.keys(messages).map((messageKey) => {
-        return messages[messageKey];
-      });
-    }
-    return [messages];
+    const messageArray: string[] = [];
+    Object.values(messages).forEach((message) => {
+      messageArray.push(...this.handleMessages(message));
+    });
+    return messageArray;
   }
-  error({ messages }: { messages: string | string[]; },  title: string): void {
-    [...this.handleMessages(messages)].forEach((message) => {
+  error(
+    errors: string | string[] | { [key: string]: string },
+    title: string
+  ): void {
+    [...this.handleMessages(errors)].forEach((message) => {
       this.ngxToastrService.error(message, title);
     });
   }
