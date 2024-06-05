@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as domain from '../../../../domain';
-import { Observable, tap } from 'rxjs';
+import { Observable, tap, throwError } from 'rxjs';
 import { ToastrService } from './toastr.service';
 import { Router } from '@angular/router';
 @Injectable({
@@ -15,16 +15,18 @@ export class VisitService {
   list(params?: domain.PaginateModel): Observable<domain.DefaultListResponseModel<domain.VisitModel>> {
     return this.residenceRepository.list(params);
   }
-  create(user: domain.VisitModel): Observable<domain.VisitDefaultResponseModel> {
-    return this.residenceRepository.create(user).pipe(
+  create(visit: domain.VisitModel): Observable<domain.VisitDefaultResponseModel> {
+    if(!this.validate(visit)) return throwError(() => new Error('Falha ao salvar!'));
+    return this.residenceRepository.create(visit).pipe(
       tap(({ messages }) => {
         this.router.navigate(['/', 'visitas']);
         this.toastrService.success(messages, 'Tudo certo!');
       })
     );
   }
-  update(user: domain.VisitModel): Observable<domain.VisitDefaultResponseModel> {
-    return this.residenceRepository.update(user).pipe(
+  update(visit: domain.VisitModel): Observable<domain.VisitDefaultResponseModel> {
+    if(!this.validate(visit)) return throwError(() => new Error('Falha ao salvar!'));
+    return this.residenceRepository.update(visit).pipe(
       tap(({ messages }) => {
         this.router.navigate(['/', 'visitas']);
         this.toastrService.success(messages, 'Tudo certo!');
@@ -47,5 +49,16 @@ export class VisitService {
         this.toastrService.success(messages, 'Tudo certo!');
       })
     );
+  }
+  validate(visit: domain.VisitModel): boolean {
+    if(visit?.residentId === 0) {
+      this.toastrService.error('O morador é obrigatório', 'Ops...');
+      return false
+    }
+    if(visit?.residencesId === 0) {
+      this.toastrService.error('A residência é obrigatória', 'Ops...');
+      return false
+    }
+    return true
   }
 }

@@ -13,7 +13,7 @@ class VisitService extends BaseService
 {
     public function list(Request $request)
     {
-        $list = Visit::orderBy('created_at', 'desc');
+        $list = Visit::orderBy('leave_at', 'asc')->orderBy('created_at', 'desc');
         $searchString = $request->name;
         if ($searchString) {
             $list = $list->orWhereHas('visitor', function ($query) use ($searchString) {

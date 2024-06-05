@@ -12,11 +12,17 @@ class ResidentService extends BaseService
 {
     public function list($request)
     {
-        $resident = Resident::orderBy('name', 'asc');
-        $params = ['name'];
-        $filtered = $this->handleFilters($request, $resident, $params);
-        $count = $filtered->count();
-        $list = $this->paginate($filtered, $request->page, $request->limit);
+        $resident = Resident::orderBy('name', 'asc')->with('residence');
+        $searchString = $request->name;
+        if ($searchString) {
+            $searchString = join('%', explode(' ', $searchString));
+            $list = $resident->orWhereHas('residence', function ($query) use ($searchString) {
+                $query->where('name', 'like', '%' . $searchString . '%');
+            });
+            $list = $resident->orWhere('name', 'like', '%' . $searchString . '%');
+        }
+        $count = $resident->count();
+        $list = $this->paginate($resident, $request->page, $request->limit);
         return [
             'list' => $list->get(),
             'count' => $count,
@@ -49,7 +55,7 @@ class ResidentService extends BaseService
                 'residences_id' => $request->residences_id,
             ]);
             DB::commit();
-            return $created;
+            return $created->with('residence')->first();
         } catch (Exception $e) {
             DB::rollBack();
             return null;

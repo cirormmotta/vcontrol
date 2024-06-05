@@ -42,10 +42,7 @@ export class DashboardComponent {
     this.searched = !!this.filterName;
     this.visitService
       .list({
-        page,
-        limit: 10,
         name: this.filterName,
-        leaveNull: 'true',
         last12hours: 'true',
       })
       .subscribe({

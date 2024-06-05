@@ -87,9 +87,9 @@ export class CreaterResidentComponent {
         residencesId: value.residence || 0,
       })
       .subscribe({
-        next: () => {
+        next: ({resident}) => {
           if (this.data?.modal) {
-            this.dialogRef.close();
+            this.dialogRef.close(resident);
             return;
           }
           this.router.navigate(['/', 'moradores']);

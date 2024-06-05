@@ -41,7 +41,7 @@
     </mat-card-header>
     <mat-card-content>
       <ul>
-        <li>
+`        <li>
           <div class="visitor-name">
             <img
               [src]="item?.visitor?.picture"
@@ -60,13 +60,17 @@
           <small> Liberado por </small><br />
           {{ item?.resident?.name }}
         </li>
+        <li *ngIf="item?.carLicensePlate">
+          <small> Placa do veículo </small><br />
+          {{ item?.carLicensePlate }}
+        </li>
         <li>
           <small> Entrada </small><br />
           {{ item?.createdAt | date : "dd/MM/yyyy HH:mm" }}
         </li>
         <li *ngIf="item?.leaveAt; else leave">
-          <small> Entrada </small><br />
-          {{ item?.leaveAt }}
+          <small> Saída </small><br />
+          {{ item?.leaveAt | date : "dd/MM/yyyy HH:mm" }}
         </li>
         <ng-template #leave>
           <button mat-flat-button (click)="leaveVisit(item?.id)" color="warn">

@@ -22,60 +22,57 @@
           ></app-errors-handler>
         </mat-form-field>
         <mat-form-field>
-          <mat-label>Residência</mat-label>
+          <mat-label>Morador</mat-label>
           <input
             type="text"
             placeholder="Digite para buscar"
             aria-label="Residência"
             matInput
-            [formControl]="form.controls.residence"
+            [formControl]="form.controls.resident"
             [matAutocomplete]="auto"
           />
           <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
             @for (option of filteredOptions; track option) {
-            <mat-option [value]="option.name">{{ option.name }}</mat-option>
+            <mat-option (click)="selectResident(option)" [value]="option.name">
+              <span>
+                {{ option.name }}<br />
+                <small>{{ option?.residence?.name }}</small>
+              </span>
+            </mat-option>
             }
           </mat-autocomplete>
         </mat-form-field>
+        <div class="input-content">
+          <a mat-button (click)="createResident()">
+            <mat-icon>add_box</mat-icon>
+            <span> Cadastrar morador </span>
+          </a>
+        </div>
         @if(residence){
-          <mat-form-field>
-            <mat-label>Tipo da visita</mat-label>
-            <mat-select [formControl]="form.controls.typeVisitId">
-              @for (option of typeVisitList; track option) {
-              <mat-option [value]="option.id">{{ option.name }}</mat-option>
-              }
-            </mat-select>
-          </mat-form-field>
-          <mat-form-field>
-            <mat-label>Moradores</mat-label>
-            <mat-select [formControl]="form.controls.resident">
-              @for (option of residence.residents; track option) {
-              <mat-option [value]="option.id">{{ option.name }}</mat-option>
-              }
-            </mat-select>
-          </mat-form-field>
-          <div class="input-content">
-            <a mat-button (click)="createResident()">
-              <mat-icon>add_box</mat-icon>
-              <span> Cadastrar morador </span>
-            </a>
-          </div>
-          <div class="input-content"></div>
-          <mat-form-field>
-            <mat-label>Visitante</mat-label>
-            <input
-              type="text"
-              matInput
-              [formControl]="form.controls.visitor"
-              mask="000.000.000-00"
-              placeholder="CPF do visitante"
-            />
-            <app-errors-handler
-              [control]="form.controls.visitor"
-              controlTitle="Visitante"
-              [form]="ngForm"
-            ></app-errors-handler>
-          </mat-form-field>
+        <mat-form-field>
+          <mat-label>Tipo da visita</mat-label>
+          <mat-select [formControl]="form.controls.typeVisitId">
+            @for (option of typeVisitList; track option) {
+            <mat-option [value]="option.id">{{ option.name }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Visitante</mat-label>
+          <input
+            type="text"
+            matInput
+            [formControl]="form.controls.visitor"
+            mask="000.000.000-00"
+            placeholder="CPF do visitante"
+          />
+          <app-errors-handler
+            [control]="form.controls.visitor"
+            controlTitle="Visitante"
+            [form]="ngForm"
+          ></app-errors-handler>
+        </mat-form-field>
         }
       </div>
       <div class="input-content" *ngIf="visitor">
