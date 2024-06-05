@@ -16,7 +16,8 @@ class Visit extends Model
         'residences_id',
         'residents_id',
         'type_visits_id',
-        'visitors_id'
+        'visitors_id',
+        'leave_at'
     ];
     public function residence(): HasOne
     {

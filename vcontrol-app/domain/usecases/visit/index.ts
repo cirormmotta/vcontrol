@@ -3,3 +3,4 @@ export * from './create-visit.usecase';
 export * from './edit-visit.usecase';
 export * from './delete-visit.usecase';
 export * from './find-visit.usecase';
+export * from './leave-visit.usecase';

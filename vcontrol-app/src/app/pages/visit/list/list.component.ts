@@ -58,7 +58,6 @@ export class ListComponent {
       })
       .subscribe({
         next: ({ list, count }) => {
-          console.log(list)
           this.dataSource = new MatTableDataSource(list);
           this.count = count;
         },
@@ -74,6 +73,16 @@ export class ListComponent {
   remove(id: number): void {
     if (confirm('Deseja excluir?')) {
       this.visitService.delete(id).subscribe({
+        next: () => {
+          this.list();
+        },
+      });
+    }
+  }
+  leaveVisit(id?: number): void {
+    if(!id) return
+    if (confirm('Deseja informar a saída?')) {
+      this.visitService.leaveVisit(id).subscribe({
         next: () => {
           this.list();
         },

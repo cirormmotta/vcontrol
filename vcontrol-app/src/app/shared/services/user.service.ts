@@ -46,7 +46,6 @@ export class UserService {
   ): Observable<domain.DefaultUserResponseModel> {
     return this.userRepository.changePassword(params).pipe(
       tap(({ messages }) => {
-        this.router.navigate(['/', 'usuarios']);
         this.toastrService.success(messages, 'Tudo certo!');
       })
     );

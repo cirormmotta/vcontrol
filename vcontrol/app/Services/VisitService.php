@@ -5,6 +5,7 @@ namespace App\Services;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Models\Visit;
 
@@ -12,9 +13,8 @@ class VisitService extends BaseService
 {
     public function list(Request $request)
     {
-        $visit = Visit::orderBy('created_at', 'desc');
+        $list = Visit::orderBy('created_at', 'desc');
         $searchString = $request->name;
-        $list = $this->paginate($visit, $request->page, $request->limit);
         if ($searchString) {
             $list = $list->orWhereHas('visitor', function ($query) use ($searchString) {
                 $query->where('name', 'like', '%' . $searchString . '%');
@@ -26,9 +26,18 @@ class VisitService extends BaseService
                 $query->where('name', 'like', '%' . $searchString . '%');
             });
         }
+        if ($request->last12hours) {
+            $list = $list->where('created_at', '>=', Carbon::now()->subHours(12));
+        }
+        if ($request->leaveNull) {
+            $list = $list->where('leave_at', '=', null);
+        }
+        $list = $list->with(['resident', 'visitor', 'residence', 'typeVisit']);
+        $count = $list->count();
+        $list = $this->paginate($list, $request->page, $request->limit);
         return [
-            'list' => $list->with(['resident', 'visitor', 'residence', 'typeVisit'])->get(),
-            'count' => Visit::count(),
+            'list' => $list->get(),
+            'count' => $count,
         ];
     }
     public function find($id): ?Visit
@@ -72,6 +81,25 @@ class VisitService extends BaseService
                 'residents_id' => $request->residents_id,
                 'type_visits_id' => $request->type_visits_id,
                 'visitors_id' => $request->visitors_id,
+            ]);
+            DB::commit();
+            if ($edited) {
+                return $visit;
+            }
+        } catch (Exception $e) {
+            DB::rollBack();
+        }
+        return null;
+    }
+    public function leaveVisit($id): ?Visit
+    {
+        try {
+            $visit = $this->find($id);
+            if (!$visit)
+                return null;
+            DB::beginTransaction();
+            $edited = $visit->update([
+                'leave_at' => Carbon::now(),
             ]);
             DB::commit();
             if ($edited) {

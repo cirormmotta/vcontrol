@@ -12,4 +12,5 @@ export abstract class VisitRepository {
   abstract update(param: VisitModel): Observable<VisitDefaultResponseModel>;
   abstract delete(id: Number): Observable<VisitDefaultResponseModel>;
   abstract find(id: Number): Observable<VisitModel>;
+  abstract leaveVisit(id: Number): Observable<VisitDefaultResponseModel>;
 }

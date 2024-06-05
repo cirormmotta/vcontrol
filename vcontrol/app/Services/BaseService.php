@@ -23,7 +23,7 @@ class BaseService
         if($page !== null && $limit !== null) {
             $limit = $limit ? intval($limit) : 10;
             $page = $page ? intval($page) : 0;
-            $enloque = $enloque->skip($page * $limit)->take($limit);
+            $enloque = $enloque->offset($page * $limit)->take($limit);
         }
         return $enloque;
     }

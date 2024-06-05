@@ -37,11 +37,11 @@ import { RouterModule } from '@angular/router';
 })
 export class LoginComponent {
   form = new FormGroup({
-    email: new FormControl('cirormmotta@gmail.com', [
+    email: new FormControl('', [
       Validators.required,
       Validators.email,
     ]),
-    password: new FormControl('12341234', [Validators.required]),
+    password: new FormControl('', [Validators.required]),
   });
   constructor(private authService: AuthService) {}
   submit(): void {

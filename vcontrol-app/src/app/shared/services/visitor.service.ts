@@ -29,7 +29,7 @@ export class VisitorService {
   }
   validatePicture(params?: domain.VisitorModel): boolean {
     if (params?.picture) return true;
-    this.toastrService.error('A foto é obrigatória', 'Ops...');
+    this.toastrService.error({ messages: 'A foto é obrigatória' }, 'Ops...');
     return false;
   }
   update(

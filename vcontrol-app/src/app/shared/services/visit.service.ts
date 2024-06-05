@@ -41,4 +41,11 @@ export class VisitService {
   find(id: number): Observable<domain.VisitModel> {
     return this.residenceRepository.find(id);
   }
+  leaveVisit(id: number): Observable<domain.VisitDefaultResponseModel> {
+    return this.residenceRepository.leaveVisit(id).pipe(
+      tap(({ messages }) => {
+        this.toastrService.success(messages, 'Tudo certo!');
+      })
+    );
+  }
 }

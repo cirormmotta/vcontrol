@@ -14,10 +14,12 @@ class ResidenceService extends BaseService
     {
         $residence = Residence::orderBy('name', 'asc');
         $params = ['name'];
-        $list = $this->paginate($this->handleFilters($request, $residence, $params), $request->page, $request->limit);
+        $filtered = $this->handleFilters($request, $residence, $params);
+        $count = $filtered->count();
+        $list = $this->paginate($filtered, $request->page, $request->limit);
         return [
             'list' => $list->get(),
-            'count' => Residence::count(),
+            'count' => $count,
         ];
     }
     public function find($id): ?Residence

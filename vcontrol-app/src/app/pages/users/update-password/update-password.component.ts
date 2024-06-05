@@ -42,15 +42,10 @@ import { ToastrService } from '../../../shared/services/toastr.service';
   styleUrl: './update-password.component.scss',
 })
 export class UpdatePasswordComponent {
-  form = new FormGroup(
-    {
-      password: new FormControl<string>('', [Validators.required]),
-      passwordConfirmation: new FormControl<string>('', [Validators.required]),
-    },
-    {
-      validators: equalsValidator('password', 'passwordConfirmation'),
-    }
-  );
+  form = new FormGroup({
+    password: new FormControl<string>('', [Validators.required]),
+    passwordConfirmation: new FormControl<string>('', [Validators.required]),
+  });
   constructor(
     public dialogRef: MatDialogRef<UpdatePasswordComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,

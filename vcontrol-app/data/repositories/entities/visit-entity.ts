@@ -14,6 +14,8 @@ export interface VisitEntity {
   resident?: ResidentEntity;
   type_visit?: TypeVisitEntity;
   visitor?: VisitorEntity;
+  created_at?: string;
+  leave_at?: string;
 }
 export interface VisitResponseEntity {
     messages: string[];

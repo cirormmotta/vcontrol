@@ -7,6 +7,8 @@ import { VisitorModel } from './visitor.model';
 export interface VisitModel {
   id?: number;
   carLicensePlate?: string;
+  createdAt?: string;
+  leaveAt?: string;
   residencesId: number;
   residentId: number;
   typeVisitId: number;

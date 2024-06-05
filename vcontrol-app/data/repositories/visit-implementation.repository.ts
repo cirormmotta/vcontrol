@@ -51,6 +51,11 @@ export class VisitImplementationRepository extends domain.VisitRepository {
       .delete<VisitResponseEntity>(this.path + id)
       .pipe(map((response) => this.parseResponse(response)));
   }
+  leaveVisit(id: Number): Observable<domain.VisitDefaultResponseModel> {
+    return this.apiService
+      .get<VisitResponseEntity>(this.path + id + '/leave')
+      .pipe(map((response) => this.parseResponse(response)));
+  }
   find(id: Number): Observable<domain.VisitModel> {
     return this.apiService
       .get<VisitEntity>(this.path + id)

@@ -23,11 +23,13 @@ export class VisitImplementationRepositoryMapper extends Mapper<
       resident: this.handleResident(param.resident),
       typeVisit: param.type_visit,
       visitor: param.visitor,
+      createdAt: param.created_at,
+      leaveAt: param.leave_at,
     };
   }
   handleResident(resident?: ResidentEntity): undefined | domain.ResidentModel {
     if (!resident) return undefined;
-    return handleResident(resident)
+    return handleResident(resident);
   }
   mapTo(param: domain.VisitModel): VisitEntity {
     const resident = param.resident
@@ -47,6 +49,8 @@ export class VisitImplementationRepositoryMapper extends Mapper<
       residence,
       type_visit: param.typeVisit,
       visitor: param.visitor,
+      created_at: param.createdAt,
+      leave_at: param.leaveAt,
     };
   }
 }

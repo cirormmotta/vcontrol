@@ -40,6 +40,7 @@ Route::group(["middleware" => ["auth:sanctum"]], function () {
 
     Route::get("/visits", [VisitController::class, "index"]);
     Route::get("/visits/{id}", [VisitController::class, "show"]);
+    Route::get("/visits/{id}/leave", [VisitController::class, "leave"]);
     Route::post("/visits", [VisitController::class, "store"]);
     Route::delete("/visits/{id}", [VisitController::class, "destroy"]);
     Route::put("/visits/{id}", [VisitController::class, "update"]);

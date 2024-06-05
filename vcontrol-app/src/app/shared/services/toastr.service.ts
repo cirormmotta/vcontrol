@@ -11,18 +11,28 @@ export const TOASTR_CONFIG = {
 })
 export class ToastrService {
   constructor(private ngxToastrService: NgxToastrService) {}
-  success(messages: string | string[], title: string): void {
+  success(
+    messages: string | string[] | { [key: string]: string },
+    title: string
+  ): void {
     [...this.handleMessages(messages)].forEach((message) => {
       this.ngxToastrService.success(message, title);
     });
   }
-  private handleMessages(messages: string | string[]): string[] {
-    if (!Array.isArray(messages)) {
-      messages = [messages];
+  private handleMessages(
+    messages: string | string[] | { [key: string]: string }
+  ): string[] {
+    if (Array.isArray(messages)) {
+      return messages;
     }
-    return messages;
+    if (typeof messages === 'object') {
+      return Object.keys(messages).map((messageKey) => {
+        return messages[messageKey];
+      });
+    }
+    return [messages];
   }
-  error(messages: string | string[], title: string): void {
+  error({ messages }: { messages: string | string[]; },  title: string): void {
     [...this.handleMessages(messages)].forEach((message) => {
       this.ngxToastrService.error(message, title);
     });

@@ -12,12 +12,14 @@ class ResidentService extends BaseService
 {
     public function list($request)
     {
-        $residence = Resident::orderBy('name', 'asc');
+        $resident = Resident::orderBy('name', 'asc');
         $params = ['name'];
-        $list = $this->paginate($this->handleFilters($request, $residence, $params), $request->page, $request->limit);
+        $filtered = $this->handleFilters($request, $resident, $params);
+        $count = $filtered->count();
+        $list = $this->paginate($filtered, $request->page, $request->limit);
         return [
             'list' => $list->get(),
-            'count' => Resident::count(),
+            'count' => $count,
         ];
     }
     public function find($id): ?Resident

@@ -4,6 +4,10 @@ import { PermissionDirective } from '../../../../security/permission/directives/
 import { RouterModule } from '@angular/router';
 import { MatIcon } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
+import { MatDialog } from '@angular/material/dialog';
+import { UpdatePasswordComponent } from '../../../../pages/users/update-password/update-password.component';
+import { MatDividerModule } from '@angular/material/divider';
+import { AuthService } from '../../../../pages/auth/services/auth.service';
 @Component({
   selector: 'app-menu-content',
   standalone: true,
@@ -12,54 +16,75 @@ import { CommonModule } from '@angular/common';
     PermissionDirective,
     RouterModule,
     MatIcon,
-    CommonModule
+    MatDividerModule,
+    CommonModule,
   ],
   templateUrl: './menu-content.component.html',
-  styleUrl: './menu-content.component.scss'
+  styleUrl: './menu-content.component.scss',
 })
 export class MenuContentComponent {
+  constructor(public dialog: MatDialog,
+    private authService: AuthService
+  ) {
+
+  }
   menuList: any[] = [
+    {
+      title: 'Página inicial',
+      path: ['/', 'dashboard'],
+      permissions: [],
+      icon: 'home',
+    },
     {
       title: 'Visitas',
       path: ['/', 'visitas'],
       permissions: [],
-      icon: 'home'
+      icon: 'badge',
     },
     {
       title: 'Tipos de visita',
       path: ['/', 'tipos-de-visita'],
       permissions: ['configs'],
-      icon: 'home'
+      icon: 'face',
     },
     {
       title: 'Visitantes',
       path: ['/', 'visitantes'],
       permissions: [],
-      icon: 'home'
+      icon: 'recent_actors',
     },
     {
       title: 'Residências',
       path: ['/', 'residencias'],
       permissions: [],
-      icon: 'home'
+      icon: 'apartment',
     },
     {
       title: 'Moradores',
       path: ['/', 'moradores'],
       permissions: [],
-      icon: 'home'
+      icon: 'person_pin',
     },
     {
       title: 'Usuários',
       path: ['/', 'usuarios'],
       permissions: ['users'],
-      icon: 'person'
+      icon: 'person',
     },
     {
       title: 'Permissões',
       path: ['/', 'permissoes'],
       permissions: [],
-      icon: 'person'
-    }
-  ]
+      icon: 'folder_supervised',
+    },
+  ];
+  changePassword(): void {
+    this.authService.getProfile().subscribe(({id})=>{
+      const dialogRef = this.dialog.open(UpdatePasswordComponent, {
+        data: { id },
+      });
+  
+      dialogRef.afterClosed().subscribe((result) => {});
+    })
+  }
 }

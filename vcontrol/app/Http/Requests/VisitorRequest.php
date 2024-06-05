@@ -19,9 +19,10 @@ class VisitorRequest extends FormRequest
     public function rules(): array
     {
         $id = $this->route("id");
+        $uniqueValidation = ('unique:visitors,cpf' . ($id ? ',' . $id : ''));
         return [
             'name' => 'required',
-            'cpf' => 'required|unique:visitors,deleted_at,NULL,cpf' . ($id ? ',' . $id : '').'',
+            'cpf' => ['required',$uniqueValidation, new \App\Rules\CPFRule],
             'phone' => 'required',
         ];
     }

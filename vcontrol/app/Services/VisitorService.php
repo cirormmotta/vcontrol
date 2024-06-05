@@ -15,10 +15,12 @@ class VisitorService extends BaseService
     {
         $visitor = Visitor::orderBy('name', 'asc');
         $params = ['name', 'cpf'];
-        $list = $this->paginate($this->handleFilters($request, $visitor, $params), $page, $limit);
+        $filtered = $this->handleFilters($request, $visitor, $params);
+        $count = $filtered->count();
+        $list = $this->paginate($filtered, $request->page, $request->limit);
         return [
             'list' => $list->get(),
-            'count' => Visitor::count(),
+            'count' => $count,
         ];
     }
     public function find($id): ?Visitor

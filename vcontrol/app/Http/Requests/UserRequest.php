@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\Rules\Password;
 
 class UserRequest extends FormRequest
 {
@@ -25,7 +26,15 @@ class UserRequest extends FormRequest
             'user_type_id' => 'required',
         ];
         if (!$userId) {
-            $rules['password'] = 'required|min:8';
+            $rules['password'] = [
+                'required',
+                'confirmed',
+                Password::min(8)
+                    ->mixedCase()
+                    ->numbers()
+                    ->symbols()
+                    ->uncompromised(),
+            ];
         }
         return $rules;
     }
@@ -39,6 +48,7 @@ class UserRequest extends FormRequest
             'password.required' => 'A senha é obrigatória.',
             'password.min' => 'A senha é deve conter :min caracteres.',
             'user_type_id.required' => 'O tipo é obrigatório.',
+            'password.confirmed' => 'As senhas são divergentes.',
         ];
     }
 }

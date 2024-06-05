@@ -1,4 +1,4 @@
-<mat-card class="example-card">
+<mat-card>
   <mat-card-header>
     <mat-card-title>Visitas</mat-card-title>
   </mat-card-header>
@@ -25,7 +25,7 @@
         </button>
       </div>
       <a [routerLink]="['novo']" mat-flat-button color="primary"
-        >Cadastrar visitante</a
+        >Cadastrar visita</a
       >
     </div>
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
@@ -33,8 +33,15 @@
         <th mat-header-cell *matHeaderCellDef>Visitante</th>
         <td mat-cell *matCellDef="let element">
           <div class="visitor-name">
-            <img [src]="element?.visitor?.picture" [alt]="element?.visitor?.name" class="avatar" />
-            {{ element?.visitor?.name }}
+            <img
+              [src]="element?.visitor?.picture"
+              [alt]="element?.visitor?.name"
+              class="avatar"
+            />
+            <span>
+              {{ element?.visitor?.name }}<br />
+              <small>{{ element?.typeVisit?.name }}</small>
+            </span>
           </div>
         </td>
       </ng-container>
@@ -42,7 +49,7 @@
         <th mat-header-cell *matHeaderCellDef>Morador</th>
         <td mat-cell *matCellDef="let element">
           <div class="visitor-name">
-            {{ element?.resident?.name }}<br>
+            {{ element?.resident?.name }}<br />
             <small>
               {{ element?.residence?.name }}
             </small>
@@ -50,10 +57,20 @@
         </td>
       </ng-container>
       <ng-container matColumnDef="typeVisit">
-        <th mat-header-cell *matHeaderCellDef>Tipo da visita</th>
+        <th mat-header-cell *matHeaderCellDef>Entrada/Saída</th>
         <td mat-cell *matCellDef="let element">
           <div class="visitor-name">
-            {{ element?.typeVisit?.name }}
+            <small>
+              {{ element?.createdAt | date: 'dd/MM/yyyy hh:mm' }}
+              - 
+              <ng-content *ngIf="element?.leaveAt; else leaveNull">
+                {{ element?.leaveAt | date: 'dd/MM/yyyy hh:mm' }}
+              </ng-content> 
+              <ng-template #leaveNull>
+                Saída pendente
+              </ng-template>
+
+            </small>
           </div>
         </td>
       </ng-container>
@@ -75,6 +92,10 @@
             <button (click)="remove(element.id)" mat-menu-item>
               <mat-icon>delete</mat-icon>
               <span>Excluir</span>
+            </button>
+            <button (click)="leaveVisit(element.id)" mat-menu-item>
+              <mat-icon>tab_move</mat-icon>
+              <span>Registrar saída</span>
             </button>
           </mat-menu>
         </td>

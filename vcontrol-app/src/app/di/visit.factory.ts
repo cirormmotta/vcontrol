@@ -10,6 +10,8 @@ const deleteUseCaseFactory = (userRepo: domain.VisitRepository) =>
   new domain.DeleteVisitUseCase(userRepo);
 const findUseCaseFactory = (userRepo: domain.VisitRepository) =>
   new domain.FindVisitUseCase(userRepo);
+const leaveUseCaseFactory = (userRepo: domain.VisitRepository) =>
+  new domain.LeaveVisitUseCase(userRepo);
 export const visitUseCaseProvider = [
   {
     provide: domain.ListVisitUseCase,
@@ -34,6 +36,11 @@ export const visitUseCaseProvider = [
   {
     provide: domain.FindVisitUseCase,
     useFactory: findUseCaseFactory,
+    deps: [domain.VisitRepository],
+  },
+  {
+    provide: domain.LeaveVisitUseCase,
+    useFactory: leaveUseCaseFactory,
     deps: [domain.VisitRepository],
   },
   {

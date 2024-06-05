@@ -12,7 +12,7 @@ export class AuthService {
   constructor(
     private authRepository: domain.AuthRepository,
     private router: Router,
-    private toastrService: ToastrService
+    public toastrService: ToastrService
   ) {}
   login(params: any): Observable<domain.UserModel> | any {
     return this.authRepository.login(params).pipe(

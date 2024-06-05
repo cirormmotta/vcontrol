@@ -72,7 +72,7 @@ export class CreateVisitComponent {
   visitor!: domain.VisitorModel | undefined;
   filteredOptions: ResidenceModel[] = [];
   typeVisitList: domain.TypeVisitModel[] = [];
-
+  loadingVisitor: boolean = false;
   residents: ResidentModel[] = [];
   constructor(
     private residenceService: ResidenceService,
@@ -114,17 +114,22 @@ export class CreateVisitComponent {
     const visitorInput = this.form.get('visitor');
     visitorInput?.valueChanges.subscribe({
       next: (cpf) => {
-        if (!visitorInput.valid) return;
+        if (!visitorInput.valid || this.loadingVisitor) return;
+        this.loadingVisitor = true;
         this.visitorService
           .list({
             cpf: cpf || '',
           })
-          .subscribe(({ list }) => {
-            if (list.length > 0) {
-              this.visitor = list[0];
-              return;
-            }
-            this.createVisitor(cpf || '');
+          .subscribe({
+            error: () => (this.loadingVisitor = false),
+            next: ({ list }) => {
+              this.loadingVisitor = false;
+              if (list.length > 0) {
+                this.visitor = list[0];
+                return;
+              }
+              this.createVisitor(cpf || '');
+            },
           });
       },
     });
@@ -189,7 +194,7 @@ export class CreateVisitComponent {
 
     this.visitor = undefined;
     dialogRef.afterClosed().subscribe((result) => {
-      console.log('createVisitor', result)
+      console.log('createVisitor', result);
       if (result) {
         this.visitor = result;
       }

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { ScrollContentComponent } from '../shared/layouts/authenticated-area/scroll-content/scroll-content.component';
 import { AuthenticatedGuard } from '../security/guards/authenticated.guard';
-import { ListComponent } from '../pages/visit/list/list.component';
+import { DashboardComponent } from '../pages/dashboard/dashboard.component';
 const routes: Routes = [
   {
     path: '',
@@ -12,7 +12,7 @@ const routes: Routes = [
     children: [
       {
         path: 'dashboard',
-        component: ListComponent,
+        component: DashboardComponent,
       },
       {
         path: 'usuarios',

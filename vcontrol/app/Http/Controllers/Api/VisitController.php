@@ -41,6 +41,14 @@ class VisitController extends Controller
         }
         return response()->json(['messages' => ['Falha ao editar.']], 400);
     }
+    public function leave(string $id, VisitService $visitService): JsonResponse
+    {
+        $edited = $visitService->leaveVisit($id);
+        if ($edited != null) {
+            return response()->json(['messages' => ['Saída registrada com sucasso!'], 'visit' => $edited], 200);
+        }
+        return response()->json(['messages' => ['Falha ao editar.']], 400);
+    }
     public function destroy(string $id, VisitService $visitService): JsonResponse
     {
         $destroyed = $visitService->destroy($id) !== null;

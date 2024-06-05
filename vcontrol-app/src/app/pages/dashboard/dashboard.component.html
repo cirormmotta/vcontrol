@@ -1,1 +1,87 @@
-<p>dashboard works!</p>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Visitas</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="filters">
+      <div>
+        <mat-form-field>
+          <mat-label>Filtrar por nome</mat-label>
+          <input
+            matInput
+            [(ngModel)]="filterName"
+            placeholder="Filtrar"
+            (keyup)="searched = false"
+            #input
+          />
+        </mat-form-field>
+        <button *ngIf="!searched" (click)="list()" mat-button>
+          <mat-icon>search</mat-icon>
+          <span>Buscar</span>
+        </button>
+        <button *ngIf="searched" (click)="clear()" mat-button>
+          <mat-icon>clear</mat-icon>
+          <span>Limpar</span>
+        </button>
+      </div>
+      <a [routerLink]="['/', 'visitas', 'novo']" mat-flat-button color="primary"
+        >Cadastrar visita</a
+      >
+    </div>
+  </mat-card-content>
+</mat-card>
+@if(visitList.length > 0) {
+<div class="visits visits-content">
+  @for (item of visitList; track $index) {
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        {{ item?.residence?.name }}
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <ul>
+        <li>
+          <div class="visitor-name">
+            <img
+              [src]="item?.visitor?.picture"
+              [alt]="item?.visitor?.name"
+              class="avatar"
+            />
+            <span>
+              {{ item?.visitor?.name }}<br />
+              <small>
+                {{ item?.typeVisit?.name }}
+              </small>
+            </span>
+          </div>
+        </li>
+        <li>
+          <small> Liberado por </small><br />
+          {{ item?.resident?.name }}
+        </li>
+        <li>
+          <small> Entrada </small><br />
+          {{ item?.createdAt | date : "dd/MM/yyyy HH:mm" }}
+        </li>
+        <li *ngIf="item?.leaveAt; else leave">
+          <small> Entrada </small><br />
+          {{ item?.leaveAt }}
+        </li>
+        <ng-template #leave>
+          <button mat-flat-button (click)="leaveVisit(item?.id)" color="warn">
+            Registrar saída
+          </button>
+        </ng-template>
+      </ul>
+    </mat-card-content>
+  </mat-card>
+  }
+</div>
+} @else {
+<mat-card class="visits">
+  <mat-card-header>
+    <mat-card-title> Nenhuma visita ativa </mat-card-title>
+  </mat-card-header>
+</mat-card>
+}
